@@ -1,1 +1,161 @@
-# bham
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحه اصلی بُراق حامیم</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Vazir', sans-serif;
+            margin: 0;
+            background: url('https://www.toptal.com/designers/subtlepatterns/uploads/arabesque.png');
+            color: #444;
+            text-align: center;
+        }
+        header {
+            background: linear-gradient(135deg, #2c5fa8, #008080);
+            color: white;
+            padding: 30px;
+            border-bottom: 4px solid #d4af37;
+        }
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+        header img {
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+        .rss-ticker {
+            background: #d4af37;
+            color: white;
+            padding: 10px;
+            overflow: hidden;
+            white-space: nowrap;
+            box-sizing: border-box;
+            position: relative;
+        }
+        .rss-ticker span {
+            display: inline-block;
+            padding-left: 100%;
+            animation: scroll-left 400s linear infinite;
+        }
+        @keyframes scroll-left {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .stats {
+            font-size: 1.1em;
+            color: #2c5fa8;
+            margin: 20px 0;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            width: 260px;
+            cursor: pointer;
+            border: 2px solid #2c5fa8;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+        }
+        .card h3 {
+            margin: 20px;
+            font-size: 1.1rem;
+            color: #2c5fa8;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="https://bham.ir" target="_blank">
+        <img src="https://boraqhamim.ir/fa/wp-content/uploads/2022/03/cropped-logo100.100.png" alt="لوگو بُراق حامیم">
+        <h1>به پایگاه خبری هنری بُراق حامیم خوش آمدید</h1>
+    </a>
+</header>
+
+<div class="rss-ticker" id="rss-ticker">
+    <span>آخرین اخبار: در حال بارگذاری...</span>
+</div>
+
+<div class="stats">
+    📦 مجموع لینک ها: <span id="total-content">0</span>
+</div>
+
+<main class="container">
+    <a href="https://boraqhamim.ir/" target="_blank">
+        <div class="card">
+            <h3>اخبار و رویدادهای هنر ایرانی اسلامی ایران و جهان</h3>
+        </div>
+    </a>
+    <a href="https://boraqhamim.ir/wikiart/" target="_blank">
+        <div class="card">
+            <h3>دانشنامه تخصصی هنر بُراق حامیم</h3>
+        </div>
+    </a>
+    <a href="https://boraqhamim.ir/learn/" target="_blank">
+        <div class="card">
+            <h3>آموزش هنر در آتلیه هنری بُراق حامیم</h3>
+        </div>
+    </a>
+    <a href="https://boraqhamim.ir/shop/" target="_blank">
+        <div class="card">
+            <h3>فروشگاه اینترنتی آثار هنری و ابزار بُراق حامیم</h3>
+        </div>
+    </a>
+    <a href="https://boraqhamim.ir/%d9%be%d8%a7%d8%b3%d8%ae-%da%af%d9%88%db%8c-%d9%87%d9%86%d8%b1%d9%85%d9%86%d8%af/" target="_blank">
+        <div class="card">
+            <h3>پاسخگوی هنرمند توسط چت‌بات هوش مصنوعی</h3>
+        </div>
+    </a>
+    <a href="https://boraqhamim.ir/en/" target="_blank">
+        <div class="card">
+            <h3>Boraq Hamim Art News Agency</h3>
+        </div>
+    </a>
+</main>
+
+<script>
+    const sections = document.querySelectorAll('.card');
+    document.getElementById('total-content').innerText = sections.length;
+
+    async function fetchRSS() {
+        try {
+            const response = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://boraqhamim.ir/feed');
+            const data = await response.json();
+            if (data.items && data.items.length) {
+                const headlines = data.items.map(item => item.title);
+                const combined = headlines.join(' ⚫ ');
+                const infiniteLoop = combined + ' ⚫ ' + combined + ' ⚫ ' + combined + ' ⚫ ' + combined;
+                document.getElementById('rss-ticker').innerHTML = '<span>' + infiniteLoop + '</span>'; 
+            } else {
+                document.getElementById('rss-ticker').innerHTML = '<span>هیچ خبر جدیدی یافت نشد.</span>';
+            }
+        } catch (err) {
+            document.getElementById('rss-ticker').innerHTML = '<span>مشکل در بارگذاری اخبار.</span>';
+        }
+    }
+
+    fetchRSS();
+</script>
+
+</body>
+</html>
